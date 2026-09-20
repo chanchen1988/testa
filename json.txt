@@ -1,0 +1,101 @@
+在 VS Code 中使用 Claude Code 插件时，?不需要?去修改系统级的 config.json 文件，而是直接修改 VS Code 的 `settings.json配置文件即可。
+
+以下是适配硅基流动（SiliconFlow）的完整免登录配置模板。你只需要复制这段代码，替换其中的 API Key，粘贴到 VS Code 的设置文件中即可。
+
+完整配置模板 (settings.json)
+在 VS Code 中按下 Ctrl + Shift + P (Mac: Cmd + Shift + P)
+输入并选择 Preferences: Open User Settings (JSON)
+将以下代码块复制并粘贴到文件中（如果文件中已有其他配置，请确保用逗号分隔，不要产生语法错误）：
+
+{
+    // ========== Claude Code 插件专属配置开始 ==========
+    
+    // 1. 跳过官方登录引导，实现免登录使用
+    "claudeCode.disableLoginPrompt": true,
+
+    // 2. 配置环境变量，指向硅基流动接口
+"claudeCode.environmentVariables": [
+    { "name": "ANTHROPIC_BASE_URL", "value": "https://api.siliconflow.cn" },
+    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "xxxx" },
+    { "name": "ANTHROPIC_MODEL", "value": "deepseek-ai/DeepSeek-OCR" },
+    { "name": "ANTHROPIC_DEFAULT_OPUS_MODEL", "value": "deepseek-ai/DeepSeek-OCR" },
+    { "name": "ANTHROPIC_DEFAULT_SONNET_MODEL", "value": "deepseek-ai/DeepSeek-OCR" },
+    { "name": "ANTHROPIC_DEFAULT_HAIKU_MODEL", "value": "Pro/deepseek/deepseek-v3" }
+],
+
+    // 3. 可选：设置默认模型（部分版本插件支持此字段，优先于环境变量）
+    "claudeCode.defaultModel": "deepseek-ai/DeepSeek-V4-Flash",
+
+    // 4. 可选：权限设置，允许插件读取工作区文件和执行终端命令
+    "claudeCode.allowWorkspaceAccess": true,
+    "claudeCode.allowTerminalCommands": true,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "nrf-connect.enableTelemetry": false,
+    "claudeProviderSwitcher.profiles": [],
+
+    // ========== 配置结束 ==========
+}
+
+
+| 参数名 | 作用 | 填写建议 |
+| --- | --- | --- |
+| disableLoginPrompt | ?免登录核心开关? | 设为 true 后，启动插件不会再弹出 Anthropic 官方登录窗口。 |
+| ANTHROPIC_AUTH_TOKEN | API 密钥 | 填入你在硅基流动控制台创建的 sk-xxxx 密钥。 |
+| ANTHROPIC_BASE_URL | 接口地址 | 固定填写 https://api.siliconflow.cn/v1。硅基流动兼容 OpenAI 格式，但 Claude Code 插件通常通过识别 Auth Token 和 Base URL 来路由请求。 |
+| ANTHROPIC_MODEL | 默认模型 | 填写硅基流动支持的模型 ID，如 Qwen/Qwen2.5-Coder-7B-Instruct 或 deepseek-ai/DeepSeek-V3。 |
+| allowWorkspaceAccess | 文件读取权限 | 设为 true 允许 AI 读取你的项目代码以提供上下文。 |
+
+
+JSON 语法检查?：
+
+确保每个配置项之间用逗号 , 分隔。
+最后一个配置项后面?不能?有逗号。
+所有的键（Key）和字符串值（Value）必须使用?双引号? "。
+?模型名称匹配?：
+
+硅基流动的模型名称通常包含厂商前缀（如 Qwen/... 或 deepseek-ai/...）。请务必去硅基流动官网“模型广场”复制准确的模型 ID，填错会导致调用失败。
+?重启生效?：
+
+修改保存 settings.json 后，建议?完全关闭并重启 VS Code?，以确保环境变量和插件状态彻底刷新。
+?如果仍然提示登录?：
+
+检查是否安装了多个 Claude 相关插件产生冲突。
+确认 disableLoginPrompt 已正确保存且值为布尔值 true（不带引号）。
+
+
+{
+  "claudeCode.environmentVariables": [
+    {
+      "name": "ANTHROPIC_BASE_URL",
+      "value": "https://api.deepseek.com/anthropic"
+    },
+    {
+      "name": "ANTHROPIC_AUTH_TOKEN",
+      "value": "sk-9ef9e3ab5b594507b5604ad52099819f"
+    },
+    {
+      "name": "ANTHROPIC_MODEL",
+      "value": "deepseek-flash"
+    }
+  ],
+}
+
+"claudeCode.environmentVariables": [
+    { "name": "ANTHROPIC_BASE_URL", "value": "https://api.deepseek.com/anthropic" },
+    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "xxxx" },
+    { "name": "ANTHROPIC_MODEL", "value": "deepseek-flash" },
+    { "name": "ANTHROPIC_DEFAULT_OPUS_MODEL", "value": "deepseek-flash" },
+    { "name": "ANTHROPIC_DEFAULT_SONNET_MODEL", "value": "deepseek-flash" },
+    { "name": "ANTHROPIC_DEFAULT_HAIKU_MODEL", "value": "deepseek-flash" }
+],
+
+
+全局路径
+VS Code settings.json 中
+ctrl+shift_p  Preferences: Open User Settings (JSON)
+
+局部路径
+Claude Code 自己的全局配置文件
+C:\Users\<你的用户名>\.claude\settings.json
+
+
