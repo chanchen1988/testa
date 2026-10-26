@@ -1,0 +1,27 @@
+[
+ {
+  "name": "OTA_DOWNLOADER",
+  "path": "/packages/iot/ota_downloader",
+  "ver": "v1.0.0"
+ },
+ {
+  "name": "SYSWATCH",
+  "path": "/packages/system/syswatch",
+  "ver": "latest"
+ },
+ {
+  "name": "QBOOT",
+  "path": "/packages/system/qboot",
+  "ver": "v1.06"
+ },
+ {
+  "name": "QLED",
+  "path": "/packages/peripherals/quick_led",
+  "ver": "latest"
+ },
+ {
+  "name": "CRCLIB",
+  "path": "/packages/misc/crclib",
+  "ver": "v1.02"
+ }
+]
